@@ -1,0 +1,142 @@
+.dash-card {
+  width: 80%;
+  margin: 15px auto;
+  padding: 5px 5px;
+
+  .dash-card-add {
+    width: 200px;
+    height: 45px;
+    color: white;
+  }
+
+  .jobs-button {
+    height: 45px;
+    width: 200px;
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+
+  .logout-button {
+    height: 45px;
+    width: 150px;
+  }
+
+  .search-bar {
+    margin-left: 40px;
+    width: auto;
+    display: inline-block;
+    .search-form {
+      width: 300px;
+      height: 30px;
+      display: flex;
+      justify-content: flex-start;
+      margin: 0;
+      padding: 2px;
+
+      input {
+        width: 85%;
+        border-radius: 5px 0 0 5px;
+        border: 1px solid black;
+        height: 100%;
+        outline: none;
+        padding: 5px;
+        text-align: center;
+      }
+
+      mat-icon {
+        width: 15%;
+        border-radius: 0 5px 5px 0;
+        border-width: 1px 1px 1px 0;
+        border-color: black;
+        border-style: solid;
+        height: 100%;
+        padding: 5px;
+        cursor: pointer;
+        &:hover {
+          background: darken(white, 20%);
+        }
+        &:active {
+          box-shadow: inset 0 0 10px black;
+        }
+      }
+    }
+  }
+}
+
+.bold {
+  font-weight: 700;
+}
+.job-title {
+  width: 22%;
+  a{
+    cursor: pointer;
+    font-size: 13px;
+    color: #000;
+    text-decoration: none;
+  }
+}
+
+.job-table {
+  border-collapse: collapse;
+}
+
+.job-table td, .job-table th {
+  border-collapse: collapse;
+  padding-top: 10px;
+  padding-bottom: 15px;
+  vertical-align: top;
+}
+
+.thead {
+  border-bottom: 2px solid #ddd;
+}
+
+.status{
+  width: 8%;
+}
+
+.categories {
+  width: 13%;
+}
+
+.shortlists {
+  width: 15%;
+}
+
+.actions {
+  width: 37%;
+}
+
+.normal {
+  font-size: 12px;
+  color: #666;
+}
+
+.admin-edit {
+  cursor: pointer;
+  font-size: 12px;
+  color: #666;
+  text-decoration: underline;
+}
+
+.admin_orange {
+  cursor: pointer;
+  font-size: 12px;
+  color: #ff7900;
+  text-decoration: underline;
+}
+
+.refresh {
+  color: #58595b;
+  font-size: 11px;
+  padding: 5px 0 0 5px;
+}
+
+.button-box {
+  button {
+    padding: 2px;
+    margin-right: 5px;
+  }
+}
+
+

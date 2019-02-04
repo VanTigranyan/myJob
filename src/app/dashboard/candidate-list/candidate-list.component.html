@@ -1,0 +1,298 @@
+<mat-card class="candList" *ngIf="!job">
+  <mat-card-content>
+    <mat-progress-spinner [mode]="'indeterminate'" [diameter]="100" style="margin: auto;">
+    </mat-progress-spinner>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="candList" *ngIf="job">
+  <mat-card-content>
+    <div class="row">
+      <button mat-raised-button
+              color="primary"
+              [routerLink]="'../../job-list'"
+              [queryParams]="{page: 'active'}">
+        {{'cand-list.go' | translate}}
+      </button>
+    </div>
+    <mat-divider [inset]="true"></mat-divider>
+    <div class="row">
+      <table class="table">
+        <tbody>
+        <tr>
+          <td class="job-title">
+            <div class="bold">
+              <a target="_blank"
+                 [href]="encodeJobTitle(job.title, job.id)"
+                 class="admin-edit">
+               {{job.title}}
+              </a>
+            </div>
+          </td>
+          <td class="categories">
+            <div class="bold">{{'cand-list.ctg' | translate}}:</div>
+            <div class="normal">{{job.categoriesText}}</div>
+          </td>
+          <td class="location">
+            <div class="bold">{{'cand-list.location' | translate}}:</div>
+            <div class="normal">
+              <ng-template ngFor let-region [ngForOf]="job.regions">
+                {{region.name}}
+              </ng-template>
+            </div>
+          </td>
+          <td class="status">
+            <div class="bold">{{'job_list.status' | translate}}:</div>
+            <div class="normal">
+              {{job.confirmed ? ('job_list.confirmed' | translate) : ('job_list.not-conformed' | translate)}}
+            </div>
+            <div>
+              <ng-template [ngIf]="checkRefreshDate(job.refresh_date)">
+                <a class="admin-edit orange" (click)="refreshJob(job.id)">
+                  {{job.refreshText}}
+                </a>
+              </ng-template>
+              <ng-template [ngIf]="!checkRefreshDate(job.refresh_date)">
+                <p class="admin-edit">
+                  {{job.refreshText}}
+                </p>
+              </ng-template>
+            </div>
+          </td>
+          <td class="actions">
+            <div class="bold">{{'cand-list.actions' | translate}}:</div>
+            <div>
+              <a class="admin-edit" [routerLink]="'/employers/edit-job/' + job.id">
+                {{'job_list.edit' | translate}}
+              </a>
+            </div>
+            <div>
+              <a class="admin-edit" [routerLink]="'/employers/edit-job/' + job.id" [queryParams]="{clone : true}">
+                {{'job_list.clone' | translate}}
+              </a>
+            </div>
+            <div *ngIf="job.is_active">
+              <a class="admin-edit" (click)="toggleActivation(job.id)">
+                {{'job_list.deactivate' | translate}}
+              </a>
+            </div>
+            <div *ngIf="!job.is_active">
+              <a class="admin-edit" (click)="toggleActivation(job.id)">
+                {{'job_list.activate' | translate}}
+              </a>
+            </div>
+          </td>
+          <td class="results">
+            <div class="bold">{{'cand-list.results' | translate}}:</div>
+            <div class="normal">{{'cand-list.num-views' | translate}}: {{job.views}}</div>
+            <div class="normal">{{'cand-list.conversion' | translate}}:
+              <span style="color:#dd1321">{{job.conversion}}%</span>
+            </div>
+            <div class="normal">{{'cand-list.num-appl' | translate}}: {{job.allApplications}}</div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row buttons">
+      <div class="button-block-1">
+        <button mat-stroked-button
+                [routerLink]="'/employers/job-info/' + job.id"
+                [queryParams]="{'app-status': 'all'}"
+                [color]="currentPage === 'all' ? 'accent' : 'primary'"
+                matBadge={{job.allApplications}}
+                matBadgeColor="#F44336">
+          {{'cand-list.all-appl' | translate}}
+        </button>
+      </div>
+      <div class="button-block-2">
+        <button [color]="currentPage === 'new_application' ? 'accent' : 'primary'"
+                mat-stroked-button
+                [routerLink]="'/employers/job-info/' + job.id"
+                [queryParams]="{'app-status': 'new_application'}"
+                matBadge={{job.newApplications}}
+                matBadgePosition="above before"
+                [matBadgeColor]="job.newApplications>0?'accent':'primary'">
+          {{'cand-list.new-appl' | translate}}
+        </button>
+        <button [color]="currentPage === 'cv_downloaded' ? 'accent' : 'primary'"
+          mat-stroked-button
+          [routerLink]="'/employers/job-info/' + job.id"
+          [queryParams]="{'app-status': 'cv_downloaded'}"
+          matBadge={{job.cvApplications}}
+          matBadgePosition="above before">
+          {{'cand-list.viewed' | translate}}
+        </button>
+        <button [color]="currentPage === 'shortlist' ? 'accent' : 'primary'"
+                mat-stroked-button
+                [routerLink]="'/employers/job-info/' + job.id"
+                [queryParams]="{'app-status': 'shortlist'}"
+                matBadge={{job.shortListApplications}}
+                matBadgePosition="above before">
+          {{'cand-list.shortlist' | translate}}
+        </button>
+        <button [color]="currentPage === 'first_interview' ? 'accent' : 'primary'"
+                mat-stroked-button
+                [routerLink]="'/employers/job-info/' + job.id"
+                [queryParams]="{'app-status': 'first_interview'}"
+                matBadge={{job.firstInterviewApplications}}
+                matBadgePosition="above before">
+          {{'cand-list.first-i' | translate}}
+        </button>
+        <button [color]="currentPage === 'next_interview' ? 'accent' : 'primary'"
+                mat-stroked-button
+                [routerLink]="'/employers/job-info/' + job.id"
+                [queryParams]="{'app-status': 'next_interview'}"
+                matBadge={{job.nextApplications}}
+                matBadgePosition="above before">
+         {{'cand-list.next-i' | translate}}
+        </button>
+        <button [color]="currentPage === 'offer' ? 'accent' : 'primary'"
+                mat-stroked-button
+                [routerLink]="'/employers/job-info/' + job.id"
+                [queryParams]="{'app-status': 'offer'}"
+                matBadge={{job.offerApplications}}
+                matBadgePosition="above before">
+          {{'cand-list.offer' | translate}}
+        </button>
+        <button [color]="currentPage === 'rejected' ? 'accent' : 'primary'"
+                mat-stroked-button
+                [routerLink]="'/employers/job-info/' + job.id"
+                [queryParams]="{'app-status': 'rejected'}"
+                matBadge={{job.rejectedApplications}}
+                matBadgePosition="above before">
+          {{'cand-list.rejected' | translate}}
+        </button>
+      </div>
+    </div>
+    <mat-divider mat-inset></mat-divider>
+    <div class="row">
+      <ng-template [ngIf]="pageIsPending">
+        <mat-progress-spinner [mode]="'indeterminate'" [diameter]="100" style="margin: auto;">
+
+        </mat-progress-spinner>
+      </ng-template>
+      <div class="applicant-list" *ngIf="!pageIsPending">
+        <table class="table">
+          <ng-template [ngIf]="job.applications.length === 0">
+            <tr>
+              <td>
+                <div class="bold">
+                  {{'cand-list.no-appl' | translate}}
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template [ngIf]="job.applications.length > 0">
+            <tr *ngFor="let person of job.applications; let i = index">
+              <td class="applicant">
+                <div class="bold">
+                  {{person.name}}
+                </div>
+                <div class="normal">{{person.phone}}</div>
+                <div class="normal">{{person['email']}}</div>
+                <div class="normal">{{'cand-list.date-applied' | translate}}: {{person.created_at | date}}</div>
+                <div class="bold-top">
+                  <a
+                    class="admin-edit-normal"
+                    target="_blank"
+                    [href]="'/api/attachment/'+person.attachments[0]['file_key']"
+                    (click)="changeStatus(person.id, 'cv_downloaded')"
+                  >
+                    {{'cand-list.down-cv' | translate}}
+                  </a>
+                </div>
+                <div class="bold-top-normal" *ngIf="person.hasHighlights">
+                  <a class="admin-edit-normal" target="_blank" [href]="'/api/highlights/pdf/'+person.id">
+                    {{'cand-list.down-hl' | translate}}
+                  </a>
+                </div>
+              </td>
+              <td class="questions">
+                <div class="normal" *ngFor="let answer of person.applicationAnswers">
+                  <div class="nomal answer"><span class="bold">Q:</span>{{answer.question}}</div>
+                  <div class="nomal answer"><span class="bold">A:</span>{{answer.answer}}</div>
+                </div>
+              </td>
+              <td class="status">
+                <div class="bold">{{'cand-list.ch-st' | translate}}:</div>
+                <div class="normal" [ngClass]="{'bolded-status': person.app_status === 'shortlist'}">
+                  <a class="admin-edit-normal"
+                     target="_blank" (click)="changeStatus(person.id, 'shortlist')">
+                    {{'cand-list.shortlist' | translate}}
+                  </a>
+                </div>
+                <div class="normal" [ngClass]="{'bolded-status': person.app_status === 'first_interview'}">
+                  <a class="admin-edit-normal" target="_blank" (click)="changeStatus(person.id, 'first_interview')">
+                    {{'cand-list.first-i' | translate}}
+                  </a>
+                </div>
+                <div class="normal" [ngClass]="{'bolded-status': person.app_status === 'next_interview'}">
+                  <a class="admin-edit-normal" target="_blank" (click)="changeStatus(person.id, 'next_interview')">
+                    {{'cand-list.next-i' | translate}}
+                  </a>
+                </div>
+                <div class="normal" [ngClass]="{'bolded-status': person.app_status === 'offer'}">
+                  <a class="admin-edit-normal" target="_blank" (click)="changeStatus(person.id, 'offer')">
+                    {{'cand-list.offer' | translate}}
+                  </a>
+                </div>
+                <div class="normal" [ngClass]="{'bolded-status': person.app_status === 'reject'}">
+                  <a class="admin-edit-normal" target="_blank" (click)="changeStatus(person.id, 'reject')">
+                    {{'cand-list.reject' | translate}}
+                  </a>
+                </div>
+              </td>
+              <td class="notes">
+                <div class="bold">{{'cand-list.notes' | translate}}:</div>
+                <ng-template [ngIf]="(noteIsPending | async) === i">
+                  <mat-progress-spinner [mode]="'indeterminate'" [diameter]="50">
+                  </mat-progress-spinner>
+                </ng-template>
+                <ng-template [ngIf]="(noteIsPending | async) !== i">
+                  <div class="normal" *ngIf="this.isEditable !== i">
+                    <a class="admin-edit-normal" (click)="onEdit(i)">{{'cand-list.edit-note' | translate}}</a>
+                  </div>
+                  <div class="notes-value" *ngIf="person.note && this.isEditable !== i">{{person.note}}</div>
+                  <div class="edit-notes" *ngIf="this.isEditable === i">
+                <textarea [formControl]="notes" [value]="person.note">
+                </textarea>
+                    <div class="editable">
+                      <a (click)="this.onEditSave(person.note, person.id, i)"
+                         *ngIf="!this.notes.pristine && this.notes.value !== person.note">
+                        {{'cand-list.save' | translate}} |
+                      </a>
+                      <a (click)="this.onEditCancel(person.note)">{{'cand-list.cancel' | translate}}</a>
+                    </div>
+                  </div>
+                </ng-template>
+              </td>
+              <td class="rating">
+                <div class="bold">{{'cand-list.cand-rate' | translate}}:</div>
+                <div class="rating-stars">
+                  <ng-template [ngIf]="(rateIsPending | async) === i">
+                    <mat-progress-spinner mode="indeterminate" [diameter]="50" style="width: 100px; margin: auto">
+                    </mat-progress-spinner>
+                  </ng-template>
+                  <ng-template [ngIf]="(rateIsPending | async) !== i">
+                    <ul>
+                      <ng-template ngFor let-r [ngForOf]="Arr(5).fill(1)" let-n="index">
+                        <li>
+                          <mat-icon
+                            (click)="toggleRating(n+1, person.id, i)"
+                            [color]="n+1 <= person.app_rating ? 'accent' : 'primary'">
+                            star
+                          </mat-icon>
+                        </li>
+                      </ng-template>
+                    </ul>
+                  </ng-template>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </table>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,141 @@
+<mat-card class="example-card dash-card">
+  <mat-card-actions fxLayout="row nowrap" fxFlexAlign="spaceBetween stretch" fxLayoutGap="20px">
+    <button
+      mat-raised-button
+      color="accent"
+      class="dash-card-add"
+      [routerLink]="'../edit-job/new'"
+    >
+      {{'job_list.add_job' | translate}}
+    </button>
+    <div class="search-bar" style="margin-right: 10px;">
+      <form class="search-form">
+        <input type="text" placeholder="{{'job_list.search_jobs' | translate}}" #search/>
+        <mat-icon role="button" svgIcon="search-icon" (click)="findJob(search.value)">search</mat-icon>
+      </form>
+    </div>
+    <button mat-stroked-button color="primary" class="jobs-button" (click)="changeActivation()">
+      {{ isActive ? ('job_list.deactivated_jobs' | translate) : ('job_list.active_jobs' | translate) }}
+    </button>
+    <button mat-stroked-button color="warn" class="logout-button" (click)="onLogout()">{{'job_list.logout'| translate}}</button>
+  </mat-card-actions>
+  <mat-card-content *ngIf="jobIsPending">
+    <mat-progress-spinner [mode]="'indeterminate'" [diameter]="100" style="margin: auto;">
+    </mat-progress-spinner>
+  </mat-card-content>
+  <mat-card-content *ngIf="allJobs && !jobIsPending">
+    <h1>{{isActive ? ('job_list.active_jobs' | translate) : ('job_list.deactivated_jobs' | translate)}}</h1>
+    <div>
+      <ng-template [ngIf]="!checkLength()">
+        {{'job_list.no-job' | translate}}
+      </ng-template>
+    </div>
+    <table *ngIf="checkLength()" class="job-table">
+      <thead>
+      <tr>
+        <th class="thead"></th>
+        <th class="thead"></th>
+        <th class="thead"></th>
+        <th class="thead"></th>
+        <th class="thead"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-template ngFor let-job [ngForOf]="allJobs" let-i="index">
+        <tr *ngIf="job.is_active === isActive">
+          <td class="job-title">
+            <div>
+              <div class="bold">
+                <a [routerLink]="'../job-info/'+ job.id" [queryParams]="{'app-status': 'new_application'}">
+                  {{job.title}}
+                </a>
+              </div>
+            </div>
+            <div class="regions">
+              <div class="normal">
+                <ng-template ngFor let-region [ngForOf]="job.regions">
+                  {{region.name}}
+                </ng-template>
+                <span>| Created: {{job.created_at | date}}</span>
+              </div>
+            </div>
+          </td>
+          <td class="status">
+            <div class="bold">{{'job_list.status' | translate}}:</div>
+            <div class="normal">{{job.confirmed ? ('job_list.confirmed' | translate) : ('job_list.not-confirmed' | translate)}}</div>
+          </td>
+          <td class="categories">
+            <div class="bold">{{'job_list.categories' | translate}}:</div>
+            <div class="normal">{{job.categoriesText}}</div>
+          </td>
+          <td class="shortlists">
+            <div class="bold">{{'job_list.shortlists' | translate}}:</div>
+            <div class="normal" *ngIf="job.allApplications > 0">
+              <a href="" class="admin-edit"
+                 [routerLink]="'../job-info/'+ job.id"
+                 [queryParams]="{'app-status': 'all'}"
+              >
+                {{'job_list.all-applications' | translate}}: {{job.allApplications}}
+              </a>
+            </div>
+            <div class="normal orange" *ngIf="job.newApplications > 0">
+              <a href="" class="admin_orange"
+                 [routerLink]="'../job-info/'+ job.id"
+                 [queryParams]="{'app-status': 'new_application'}"
+              >
+                {{'job_list.new-appl' | translate}}: {{job.newApplications}}
+              </a>
+            </div>
+          </td>
+          <td class="actions">
+            <div>
+              <div class="button-box">
+                <button mat-flat-button color="warn"
+                        [disabled]="!checkRefresh(job.refresh_date)"
+                        (click)="refreshJob(job.id)"
+                >
+                 {{'job_list.refresh' | translate}}
+                </button>
+                <button
+                  mat-stroked-button
+                  color="primary"
+                  routerLink="../edit-job/{{job.id}}">
+                  {{'job_list.edit' | translate}}
+                </button>
+                <button
+                  mat-stroked-button
+                  color="primary"
+                  [routerLink]="'../edit-job/' + job.id"
+                  [queryParams]="{clone: true}">
+                  {{'job_list.clone' | translate}}
+                </button>
+                <button mat-stroked-button color="primary" (click)="toggleJobActivation(job.id, i)">
+                  <ng-template [ngIf]="(activationIsPending$ | async) === i">
+                    <mat-progress-spinner mode="indeterminate" [diameter]="30" style="margin: auto; display: inline-block;">
+                    </mat-progress-spinner>
+                  </ng-template>
+                  <ng-template [ngIf]="(activationIsPending$ | async) !== i">
+                    {{job.is_active ? ('job_list.deactivate' | translate) : ('job_list.activate' | translate)}}
+                  </ng-template>
+                </button>
+              </div>
+              <div>
+                <span class="refresh">
+                  {{job.refreshText}}
+                </span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      </tbody>
+    </table>
+  </mat-card-content>
+  <mat-paginator  *ngIf="allJobs"
+                  (page)="onPage($event)"
+                  #paginator
+                  [length]="totalJob$ | async"
+                  [pageSize]="10"
+                  [pageSizeOptions]="[10, 25, 50, 100]">
+  </mat-paginator>
+</mat-card>

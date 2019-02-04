@@ -1,0 +1,159 @@
+.candList{
+  width: 80%;
+  margin: 15px auto;
+  padding: 15px;
+}
+
+mat-divider {
+  margin-bottom: 15px;
+}
+
+.table td {
+  vertical-align: top;
+  padding: 8px;
+  line-height: 1.42857143;
+}
+
+.row {
+  margin-bottom: 15px;
+  margin-top: 30px;
+}
+
+.table {
+  border-collapse: collapse;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.normal {
+  font-size: 12px;
+  color: #666;
+}
+
+.admin-edit {
+  cursor: pointer;
+  font-size: 12px;
+  color: #666;
+  text-decoration: underline;
+}
+
+.job-title {
+  width: 20%;
+}
+
+.categories {
+  width: 15%;
+}
+
+.location {
+  width: 12%;
+}
+
+.status {
+  width: 18%;
+}
+
+.actions {
+  width: 15%;
+}
+
+.results {
+  width: 35%;
+}
+
+.orange {
+  color: #ff7900;
+}
+
+.buttons {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+}
+
+.button-block-2 {
+  button {
+    height: 36px;
+    margin-right: 12px;
+    border-radius: 4px;
+  }
+}
+
+.applicant {
+  width: 10%;
+}
+
+.questions {
+  width: 40%;
+}
+
+.status {
+  width: 15%;
+}
+
+.notes {
+  width: 15%;
+}
+
+.rating {
+  width: 20%;
+}
+
+
+  .bolded-status {
+    a {
+      font-weight: 700 !important;
+      color: black !important;
+      cursor: not-allowed;
+    }
+  }
+
+.bold-top {
+  font-size: 12px;
+  color: #000;
+  padding: 20px 0 0;
+}
+
+.bold-top-normal {
+  font-size: 12px;
+  color: #000;
+  padding: 2px 0 0;
+}
+
+.admin-edit-normal {
+  cursor: pointer;
+  font-size: 11px;
+  text-decoration: underline;
+  font-weight: 400;
+  color: #666;
+}
+
+.admin-edit-bold {
+  cursor: pointer;
+  font-size: 11px;
+  text-decoration: underline;
+  font-weight: 700;
+  color: #666;
+}
+
+.edit-notes {
+  textarea {
+    height: auto;
+    width: 100%;
+    resize: vertical;
+  }
+}
+
+.rating-stars {
+  ul{padding: 0}
+  li {
+    list-style-type: none;
+    display: inline-block;
+    cursor: pointer;
+  }
+  mat-progress-spinner {
+    margin: auto;
+  }
+}

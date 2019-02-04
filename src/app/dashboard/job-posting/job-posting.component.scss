@@ -1,0 +1,134 @@
+.dash-card {
+  width: 80%;
+  margin: 15px auto;
+  padding: 15px;
+  .main {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+  }
+  .main-form {
+    width: 50%;
+    .title-field {
+      width: 70%;
+    }
+    .ref-field {
+      width: 70%;
+    }
+  }
+  .helpers {
+    mat-card {
+      border: 1px solid #64B5F6;
+      border-radius: 5px;
+      padding: 5px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      text-align: center;
+      vertical-align: center;
+      width: 90%;
+      height: 40px;
+      color: #1A237E;
+      font-size: 16px;
+      &:hover {
+        box-shadow: 3px 3px 20px #1565C0 !important;
+      }
+    }
+  }
+  .input-help-block {
+    mat-card {
+      background: #E0F7FA;
+      padding: 10px;
+      margin: 0;
+      margin-bottom: 15px;
+      text-align: left;
+      vertical-align: center;
+      color: #006064;
+      font-size: 16px;
+      &:hover {
+        box-shadow: 2px 2px 20px #00ACC1 !important;
+      }
+      .strong {
+        font-weight: 700;
+      }
+    }
+  }
+
+  .editor {
+    width: 100%;
+    background: #E8EAF6;
+    margin-bottom: 15px;
+    span {
+      display: none;
+    }
+  }
+
+  .editor-has-error {
+    border: 1px solid red;
+    span {
+      display: inline-block;
+      color: red;
+      font-size: 14px;
+    }
+  }
+
+  .job-details {
+    .details-row {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+
+      .inputs {
+        width: 40%;
+        margin-right: 30px;
+        mat-form-field {
+          width: 100%;
+        }
+        .salary-range {
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: space-between;
+          mat-form-field {
+            width: 185px;
+          }
+        }
+        .salary-desc {
+          textarea {
+            min-height: 100px;
+          }
+        }
+      }
+    }
+
+    .helper {
+      width: 60%;
+      mat-card {
+        border: 1px solid #64B5F6;
+        border-radius: 5px;
+        padding: 5px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        text-align: left;
+        vertical-align: center;
+        width: 90%;
+        height: auto;
+        color: #1A237E;
+        font-size: 16px;
+        &:hover {
+          box-shadow: 3px 3px 20px #1565C0 !important;
+        }
+      }
+    }
+  }
+}
+
+mat-card-content {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.strong {
+  font-weight: 700;
+}
+

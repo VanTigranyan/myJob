@@ -1,0 +1,20 @@
+export const options = {
+  editable: true,
+  spellcheck: true,
+  height: '500px',
+  minHeight: '0',
+  width: '100%',
+  minWidth: '0',
+  translate: 'no',
+  enableToolbar: true,
+  showToolbar: true,
+  placeholder: 'Full Job Details',
+  imageEndPoint: '',
+  toolbar: [
+    ['bold', 'italic', 'underline'],
+    ['orderedList', 'unorderedList'],
+    ['undo', 'redo', 'removeFormat'],
+    ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull', 'indent', 'outdent'],
+    ['link', 'image'],
+  ],
+};

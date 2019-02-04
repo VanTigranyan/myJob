@@ -1,0 +1,102 @@
+<mat-toolbar class="main-header">
+  <div class="branding" style="height: auto;">
+    <a href="https://app.myjobs.com.mm" style="line-height: 0">
+      <img src="../../../assets/images/logo.png" alt="" style="height: 35px; " >
+    </a>
+  </div>
+  <div class="search-bar" fxFlex>
+    <form class="search-form"
+          [ngStyle.xs]="{display: 'none'}"
+          (submit)="window.location.href = 'https://app.myjobs.com.mm/en/search?query=' + search.value +  '=&category='"
+    >
+      <mat-icon svgIcon="search-icon">search</mat-icon>
+      <input type="text" placeholder="Enter Keyword (Job Title or Company) " #search/>
+    </form>
+  </div>
+  <button mat-raised-button (click)="window.location.href = 'https://app.myjobs.com.mm/employers'">
+    Employers
+  </button>
+
+  <button [matMenuTriggerFor]="user" mat-icon-button class="ml-xs" #tooltip="matTooltip" matTooltip="Profile"
+    matTooltipPosition="before" matTooltipShowDelay="300" class="ml-xs header-avatar" style="margin: 0 20px 0 20px;">
+    <mat-icon class="radius-circle" style="font-size: 36px">person</mat-icon>
+  </button>
+</mat-toolbar>
+
+<!--Apps Menu-->
+<mat-menu #apps="matMenu" x-position="before">
+  <div fxLayout="row" class="pa-xs">
+    <div fxFlex="33.3333" class="text-xs-center pa-1">
+      <a [routerLink]="['/messages']" class="block">
+        <span class="block">
+          <mat-icon class="h1 mat-text-default">email</mat-icon>
+        </span>
+        <small class="text-muted">Emails</small>
+      </a>
+      <a [routerLink]="['/calendar']" class="mt-2 block">
+        <span class="block">
+          <mat-icon class="h1 mat-text-muted">date_range</mat-icon>
+        </span>
+        <small class="text-muted">Calendar</small>
+      </a>
+    </div>
+    <div fxFlex="33.3333" class="text-xs-center pa-1">
+      <a [routerLink]="['/social']" class="block">
+        <span class="block">
+          <mat-icon class="h1 mat-text-warn">person</mat-icon>
+        </span>
+        <small class="text-muted">Social</small>
+      </a>
+      <a [routerLink]="['/maps/google']" class="mt-2 block">
+        <span class="block">
+          <mat-icon class="h1 mat-text-default">place</mat-icon>
+        </span>
+        <small class="text-muted">Map</small>
+      </a>
+    </div>
+    <div fxFlex="33.3333" class="text-xs-center pa-1">
+      <a [routerLink]="['/messsages']" class="block">
+        <span class="block">
+          <mat-icon class="h1 mat-text-accent">ondemand_video</mat-icon>
+        </span>
+        <small class="text-muted">Media</small>
+      </a>
+      <a [routerLink]="['/taskboard']" class="mt-2 block">
+        <span class="block">
+          <mat-icon class="h1 mat-text-primary">view_column</mat-icon>
+        </span>
+        <small class="text-muted">Tasks</small>
+      </a>
+    </div>
+  </div>
+</mat-menu>
+
+<!--User Menu-->
+<mat-menu #user="matMenu" x-position="before">
+  <button mat-menu-item [routerLink]="['/employers/job-list']">
+    <mat-icon>work</mat-icon>
+    Your Jobs
+  </button>
+  <button mat-menu-item (click)="onLogout()">
+    <mat-icon>exit_to_app</mat-icon>
+    Sign Out
+  </button>
+</mat-menu>
+
+<!--Notification Menu-->
+<mat-menu #notifications="matMenu" x-position="before" class="notifications">
+  <mat-toolbar>
+    <span class="mr-1 ml-1">Notifications</span>
+  </mat-toolbar>
+  <div [perfectScrollbar]="config" class="notifications-inner">
+    <mat-nav-list>
+      <mat-list-item *ngFor="let notice of notificationService.getAll()">
+        <mat-icon mat-list-avatar class="mat-text-{{ notice?.color }} mat-icon mat-list-avatar material-icons">{{
+          notice.icon }}</mat-icon>
+        <h4 matLine>{{ notice.text }}</h4>
+        <p matLine *ngIf="notice.subtext">{{ notice.subtext }}</p>
+        <span class="text-md mat-text-muted" matLine *ngIf="notice.date">{{ notice.date | date: 'fullDate' }}</span>
+      </mat-list-item>
+    </mat-nav-list>
+  </div>
+</mat-menu>

@@ -1,0 +1,52 @@
+@import 'mixins';
+@import 'variables';
+
+// Global styles
+body,
+html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: #F9F9F9;
+}
+
+.snack {
+  border: 2px solid;
+  font-size: 16px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.snack-primary {
+  color: #212a5e;
+  background-color: #d9dcf0;
+  border-color: #c9ceea;
+}
+
+.snack-success {
+  color: #285b2a;
+  background-color: #dbefdc;
+  border-color: #cde9ce;
+}
+
+.snack-error {
+	color: #7f231c;
+	background-color: #fdd9d7;
+	border-color: #fccac7;
+}
+
+.snack-warning {
+	color: #852d12;
+	background-color: #ffddd3;
+	border-color: #ffd0c1;
+}
+
+.snack-info {
+	color: #02587f;
+	background-color: #cdeefd;
+	border-color: #b8e7fc;
+}
+
+.cdk-overlay-container {
+  z-index: 5000;
+}

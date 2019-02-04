@@ -1,0 +1,46 @@
+<div class="session">
+  <mat-card class="overflow-hidden">
+    <div fxLayout="row wrap">
+      <div fxFlex.gt-xs="50" fxFlex="100" class="bg-image bg-image-signin">
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="h-100 py-3">
+          <div class="text-xs-center pb-1 mat-text-white">
+            <div style="width: 100px;height: 30px;">
+              <img  src="../../../assets/images/logo.png" alt="logo" style="width: 100px;height: 30px;"/>
+            </div>
+            <p class="mt-xs mb-0"><strong class="text-lg">Sign In To Your Account</strong></p>
+          </div>
+        </div>
+      </div>
+      <div fxFlex.gt-xs="50" fxFlex="100">
+        <mat-card-content class="pa-3">
+          <h1 class="mb-0">Login</h1>
+          <p class="mat-text-muted text-md mt-0 mb-2">Sign in with your app id to continue.</p>
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div fxLayout="column" fxLayoutAlign="space-around">
+              <div class="pb-1">
+                <mat-form-field style="width: 100%">
+                  <input matInput placeholder="Username" [formControl]="form.controls['uname']">
+                  <mat-icon matSuffix>person</mat-icon>
+                </mat-form-field>
+                <small *ngIf="form.controls['uname'].hasError('required') && form.controls['uname'].touched" class="mat-text-warn">Username
+                  is required.</small>
+              </div>
+              <div class="pb-1">
+                <mat-form-field style="width: 100%">
+                  <input matInput type="password" placeholder="Password" [formControl]="form.controls['password']">
+                  <mat-icon matSuffix>lock</mat-icon>
+                </mat-form-field>
+                <small *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched"
+                  class="mat-text-warn">Password is required.</small>
+              </div>
+              <!--<div class="pb-1">-->
+                <!--<mat-checkbox>Stay logged in</mat-checkbox>-->
+              <!--</div>-->
+              <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Login</button>
+            </div>
+          </form>
+        </mat-card-content>
+      </div>
+    </div>
+  </mat-card>
+</div>

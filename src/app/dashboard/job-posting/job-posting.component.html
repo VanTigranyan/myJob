@@ -1,0 +1,234 @@
+<mat-card class="example-card dash-card">
+  <mat-card-content *ngIf="jobIsPending">
+    <mat-progress-spinner [mode]="'indeterminate'" [diameter]="100" style="margin: auto;">
+    </mat-progress-spinner>
+  </mat-card-content>
+  <mat-card-content *ngIf="!jobIsPending">
+    <div class="main">
+      <form class="main-form">
+        <div class="job-title-filed">
+          <mat-form-field class="title-field" [color]="'#1E88E5'">
+            <input matInput
+                   [placeholder]="'job-post.title' | translate"
+                   name = 'title'
+                   [formControl]="titleFormControl"
+                   [errorStateMatcher]="matcher">
+            <mat-error *ngIf="titleFormControl.hasError('required')">
+              {{'job-post.title-is' | translate}} <strong>{{'job-post.required' | translate}}</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="job-ref-field">
+          <mat-form-field class="ref-field">
+            <input matInput
+                   name="reference"
+                   [placeholder]="'job-post.ref' | translate"
+                   [formControl]="refFormControl"
+                   [errorStateMatcher]="matcher">
+            <mat-error *ngIf="refFormControl.hasError('required')">
+              {{'job-post.ref-is' | translate}} <strong>{{'job-post.required' | translate}}</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </form>
+      <div class="helpers">
+        <div>
+          <mat-card>
+            {{'job-post.title-help' | translate}}
+          </mat-card>
+        </div>
+        <div>
+          <mat-card>
+            {{'job-post.ref-help' | translate}}
+          </mat-card>
+        </div>
+      </div>
+    </div>
+    <mat-divider [inset]="true"></mat-divider>
+    <div class="input-help-block">
+      <mat-card>
+        <p>{{'job-post.desc-h-1' | translate}}</p>
+        <p class="strong">{{'job-post.desc-h-2' | translate}}</p>
+        <p>{{'job-post.desc-h-3' | translate}}</p>
+        <p class="strong">{{'job-post.desc-h-4' | translate}}</p>
+        <p>{{'job-post.desc-h-5' | translate}}</p>
+        <p class="strong">{{'job-post.desc-h-6' | translate}}</p>
+        <p>{{'job-post.desc-h-7' | translate}}</p>
+        <p>{{'job-post.desc-h-8' | translate}}</p>
+      </mat-card>
+    </div>
+    <div class="editor" [ngClass]="{'editor-has-error': editorFormControl.hasError('required') && editorFormControl.touched}">
+      <span>{{'job-post.desc-req' | translate}}</span>
+      <app-ngx-editor
+        [config]="config"
+        [formControl]="editorFormControl"
+        [resizer]="'none'"
+        name="description"
+      >
+      </app-ngx-editor>
+    </div>
+    <div class="job-details">
+      <form class="details-form">
+        <div class="details-row">
+          <div class="inputs">
+            <div class="details-category">
+              <mat-form-field>
+                <mat-label>{{'job-post.job-ctg' | translate}}</mat-label>
+                <mat-select [formControl]="jobCategoryControl" name="category" required>
+                    <ng-template ngFor let-ctg [ngForOf]="categories">
+                      <mat-option [value]="ctg.id">
+                        {{ctg.name}}
+                      </mat-option>
+                    </ng-template>
+                </mat-select>
+                <mat-error *ngIf="jobCategoryControl.hasError('required')">
+                  {{'job-post.field-req' | translate}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="details-additional">
+              <mat-form-field>
+                <mat-label>{{'job-post.add-ctg' | translate}}</mat-label>
+                <mat-select [formControl]="addCategoryControl" name="additional_category">
+                  <mat-option>None</mat-option>
+                  <ng-template ngFor let-ctg [ngForOf]="categories">
+                    <ng-template [ngIf]="ctg.id !== jobCategoryControl.value">
+                      <mat-option [value]="ctg.id">
+                        {{ctg.name}}
+                      </mat-option>
+                    </ng-template>
+                  </ng-template>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="helper">
+            <mat-card>
+              {{'job-post.ctg-help' | translate}}
+            </mat-card>
+          </div>
+        </div>
+        <div class="details-row">
+          <div class="inputs">
+            <div class="job-region">
+              <mat-form-field>
+                <mat-label>{{'job-post.region' | translate}}</mat-label>
+                <mat-select [formControl]="jobRegionControl" (selectionChange)="onRegionChange()" name="region" required>
+                      <mat-option *ngFor="let reg of regions" [value]="reg.id">
+                        {{reg.name}}
+                      </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="township" *ngIf="regionTownships">
+              <mat-form-field *ngIf="regionTownships.length">
+                <mat-label>{{'job-post.township' | translate}} {{selectedRegion}}</mat-label>
+                <mat-select [formControl]="townshipControl" name="township" (selectionChange)="onTownChange()">
+                  <mat-option>None</mat-option>
+                  <mat-option [value]="t.id" *ngFor="let t of regionTownships">
+                    {{t.township_name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="helper"></div>
+        </div>
+        <div class="details-row">
+          <div class="inputs">
+            <h4 style="margin-bottom: 2px">{{'job-post.salary-range' | translate}}</h4>
+            <div class="salary-range">
+              <mat-form-field>
+                <mat-label>{{'job-post.from' | translate}}</mat-label>
+                <mat-select [formControl]="salaryRangeFrom" name="salary_range_from">
+                  <mat-option [value]="sal.id" *ngFor="let sal of salaries">
+                    {{sal.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>{{'job-post.to' | translate}}</mat-label>
+                <mat-select [formControl]="salaryRangeTo" name="salary_range_to">
+                  <ng-template ngFor let-s [ngForOf]="salaries">
+                    <mat-option [value]="s.id" *ngIf="(+s.id >= +salaryRangeFrom.value) || s.id === '0'">
+                      {{s.name}}
+                    </mat-option>
+                  </ng-template>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="helper">
+            <mat-card>
+             {{'job-post.sal-helper' | translate}}
+            </mat-card>
+          </div>
+        </div>
+        <div class="details-row">
+          <div class="inputs">
+            <div class="salary-desc">
+              <mat-form-field>
+                <mat-label>{{'job-post.sal-desc' | translate}}</mat-label>
+                <textarea matInput placeholder="Salary Description"
+                          [formControl]="salaryDescControl" name="salary_description"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="helper">
+            <mat-card>
+              {{'job-post.sal-desc-help' | translate}}
+            </mat-card>
+          </div>
+        </div>
+        <div class="details-row">
+          <div class="inputs">
+            <h4 style="margin-bottom: 2px">{{'job-post.questions' | translate}}</h4>
+            <div class="question1">
+              <mat-form-field>
+                <input matInput [formControl]="question1Control" name="question_1"/>
+              </mat-form-field>
+            </div>
+            <div class="question2">
+              <mat-form-field>
+                <input matInput [formControl]="question2Control" name="question_2"/>
+              </mat-form-field>
+            </div>
+            <div class="question3">
+              <mat-form-field>
+                <input matInput [formControl]="question3Control" name="question3"/>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="helper">
+            <mat-card>
+              <p>{{'job-post.qh1' | translate}}</p>
+              <p class="strong">{{'job-post.qh2' | translate}}:</p>
+              <p>{{'job-post.qh3' | translate}}</p>
+              <p>{{'job-post.qh4' | translate}}</p>
+              <p>{{'job-post.qh5' | translate}}</p>
+            </mat-card>
+          </div>
+        </div>
+        <div class="details-row">
+          <div>
+            <button
+              mat-flat-button
+              [color]="'primary'"
+              style="height: 40px; width: 135px"
+              (click)="onSubmit()"
+            >{{'job-post.submit' | translate}}</button>
+
+            <a
+              mat-stroked-button
+              [color]="'primary'"
+              *ngIf="mode === 'edit'"
+              style="height: 40px; width: 135px; margin-left: 20px;"
+              target="_blank"
+              [attr.href]="'https://app.myjobs.com.mm/en/job/' + jobInfo.title + '/' + jobInfo.id + '?preview=true'"
+            >{{'job-post.preview' | translate}}</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </mat-card-content>
+</mat-card>
